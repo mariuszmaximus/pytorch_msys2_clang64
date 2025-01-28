@@ -279,6 +279,8 @@ class UserFunctionVariable(BaseUserFunctionVariable):
         return result
 
     def var_getattr(self, tx: "InstructionTranslator", name: str):
+        if name in ("__eq__", "__lt__"):
+            return variables.GetAttrVariable(self, name)
         source = self.source and AttrSource(self.source, name)
         try:
             subobj = inspect.getattr_static(self.fn, name)
@@ -871,6 +873,9 @@ class FunctoolsWrapsVariable(UserFunctionVariable):
 
 
 class CollectionsNamedTupleFunction(UserFunctionVariable):
+    def as_python_constant(self):
+        return self.fn
+
     def call_function(
         self,
         tx: "InstructionTranslator",
