@@ -16,7 +16,6 @@ import logging
 import multiprocessing
 import operator
 import os
-import random
 import re
 import selectors
 import sys
@@ -3164,7 +3163,6 @@ BUILTIN_SKIPLIST = (
     logging,
     multiprocessing,
     operator,
-    random,
     selectors,
     tempfile,
     threading,
