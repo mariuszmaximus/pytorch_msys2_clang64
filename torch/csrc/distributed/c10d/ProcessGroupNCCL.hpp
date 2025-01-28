@@ -126,6 +126,10 @@ static std::vector<std::string> TORCH_NCCL_LOG_CPP_STACK_ON_UNCLEAN_SHUTDOWN = {
 static std::vector<std::string> TORCH_NCCL_CUDA_EVENT_CACHE = {
     "TORCH_NCCL_CUDA_EVENT_CACHE"};
 
+// Control the number of ranks each root can cover during NCCL comm init.
+static std::vector<std::string> TORCH_NCCL_SCALABLE_INIT_RANKS_PER_ROOT = {
+    "TORCH_NCCL_SCALABLE_INIT_RANKS_PER_ROOT"};
+
 static std::vector<std::string> TORCH_NCCL_NAN_CHECK = {"TORCH_NCCL_NAN_CHECK"};
 
 constexpr const char* NCCL_BACKEND_NAME = "nccl";
@@ -802,6 +806,12 @@ class TORCH_API ProcessGroupNCCL : public Backend {
       const std::string& devicesKey,
       int p2pRank);
 
+  // Helper that allgathers nccl unique IDs to all ranks through the store
+  void allgatherUniqueNCCLID(
+      int rootRank,
+      ncclUniqueId* ncclID,
+      std::vector<ncclUniqueId>& ncclIDs);
+
   // Helper that looks up the cached NCCL communicators only
   std::shared_ptr<NCCLComm> getNCCLComm(const std::string& deviceKey);
 
@@ -991,6 +1001,9 @@ class TORCH_API ProcessGroupNCCL : public Backend {
   int getSignalSrcRank(
       c10::intrusive_ptr<Store>& store,
       const std::string& signal);
+
+  // Return the rank of root during NCCL scalable comm init.
+  int getRootRank(const int rank, const int nRanks, const int nIds);
 
  protected:
   // Function that runs as part of a separate thread aside from watchdog
