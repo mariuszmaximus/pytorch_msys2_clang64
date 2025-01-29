@@ -11,33 +11,61 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: clang64
-        location: c:\msys64_CI
-        path-type: inherit
-        release: false
-        update: false
-        cache: false
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: clang64
+          location: c:\msys64_CI
+          path-type: inherit
+          release: false
+          update: false
+          cache: false
 
-        install: >-
-          git
-          bash
+          install: >-
+            git
+            bash
 
-        pacboy: >-
-          git-lfs:p
-          cmake:p
-          clang:p
-          ninja:p
-          openmp:p
-          libunwind:p
+          pacboy: >-
+            git-lfs:p
+            cmake:p
+            clang:p
+            ninja:p
+            openmp:p
+            libunwind:p
 
-    - uses: actions/checkout@v4
-      with:
-        lfs: true
-        submodules:  true
-        fetch-depth:  0
+      - name: Enable git long paths and symlinks on Windows and disable fsmonitor daemon
+        shell: bash
+        run: |
+          git config --global core.longpaths true
+          git config --global core.symlinks true
 
-    - name: cmake [configure]
-      shell: msys2 {0}
-      run: cmake -B build_SYS_${{env.BUILD_TYPE}}  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          # https://git-scm.com/docs/git-fsmonitor--daemon. The daemon could lock
+          # the directory on Windows and prevent GHA from checking out as reported
+          # in https://github.com/actions/checkout/issues/1018
+          git config --global core.fsmonitor false
+
+      # Needed for binary builds, see: https://github.com/pytorch/pytorch/issues/73339#issuecomment-1058981560
+      - name: Enable long paths on Windows
+        shell: powershell
+        run: |
+          Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
+
+      # Since it's just a defensive command, the workflow should continue even if the command fails.
+      # This step can be removed once Windows Defender is removed from the AMI.
+      - name: Disable Windows Defender scheduled and real-time scanning for files in directories used by PyTorch
+        continue-on-error: true
+        shell: powershell
+        run: |
+          Add-MpPreference -ExclusionPath $(Get-Location).tostring(),$Env:TEMP -ErrorAction Ignore
+          # Let's both exclude the path and disable Windows Defender completely just to be sure
+          # that it doesn't interfere
+          Set-MpPreference -DisableRealtimeMonitoring $True -ErrorAction Ignore
+
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: true
+          fetch-depth: 0
+
+      - name: cmake [configure]
+        shell: msys2 {0}
+        run: cmake -B build_SYS_${{env.BUILD_TYPE}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
