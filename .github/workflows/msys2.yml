@@ -6,6 +6,9 @@ on:
 
 env:
   BUILD_TYPE: Release
+  CMAKE_C_COMPILER: C:/msys64/clang64/bin/clang.exe
+  CMAKE_CXX_COMPILER: C:/msys64/clang64/bin/clang++.exe
+  USE_CUDA: OFF  
 
 jobs:
   build:
@@ -33,6 +36,7 @@ jobs:
             protobuf:p
             eigen3:p
             openblas:p
+            openssl:p
             python-pyaml:p
             python-setuptools:p
             python-typing_extensions:p
