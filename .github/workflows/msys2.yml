@@ -98,7 +98,9 @@ jobs:
       - name: python setup.py build
         shell: msys2 {0}
         run: |
-          python setup.py build  
+          python setup.py build --cmake-only --cmake=DCMAKE_SYSTEM_PROCESSOR=x86_64
+        
+        # python setup.py build  
 
 
       - name: cmake [configure]
