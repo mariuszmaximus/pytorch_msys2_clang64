@@ -36,6 +36,7 @@ jobs:
             python-pyaml:p
             python-setuptools:p
             python-typing_extensions:p
+            libbacktrace:p
 
       - name: dir c:\msys64
         run:  dir c:\msys64
