@@ -96,10 +96,10 @@ jobs:
           git submodule update --init --recursive
 
 
-      - name: python setup.py build
-        shell: msys2 {0}
-        run: |
-          python setup.py build  
+#      - name: python setup.py build
+#        shell: msys2 {0}
+#        run: |
+#          python setup.py build  
 
 
       - name: cmake [configure]
