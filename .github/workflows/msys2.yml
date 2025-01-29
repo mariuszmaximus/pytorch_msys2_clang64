@@ -9,6 +9,7 @@ env:
   CMAKE_C_COMPILER: C:/msys64/clang64/bin/clang.exe
   CMAKE_CXX_COMPILER: C:/msys64/clang64/bin/clang++.exe
   USE_CUDA: OFF  
+  CMAKE_SYSTEM_PROCESSOR: x86_64  
 
 jobs:
   build:
@@ -98,9 +99,7 @@ jobs:
       - name: python setup.py build
         shell: msys2 {0}
         run: |
-          python setup.py build --cmake-only --cmake=DCMAKE_SYSTEM_PROCESSOR=x86_64
-        
-        # python setup.py build  
+          python setup.py build  
 
 
       - name: cmake [configure]
