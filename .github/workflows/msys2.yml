@@ -74,6 +74,12 @@ jobs:
       - name: cmake [configure]
         shell: msys2 {0}
         run: |
+          python setup.py build  
+
+
+      - name: cmake [configure]
+        shell: msys2 {0}
+        run: |
           cmake -B build_SYS_${{env.BUILD_TYPE}} \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
