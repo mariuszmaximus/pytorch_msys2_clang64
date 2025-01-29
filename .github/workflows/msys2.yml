@@ -31,6 +31,8 @@ jobs:
             openmp:p
             libunwind:p
             protobuf:p
+            eigen3:p
+            openblas:p
 
       - name: dir c:\msys64
         run:  dir c:\msys64
@@ -77,6 +79,11 @@ jobs:
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DCMAKE_C_COMPILER="c:/msys64/clang64/bin/clang.exe" \
                 -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe" \
+                    \
+                -USE_TENSORPIPE=OFF \
+                -DUSE_KLEIDIAI=OFF \
+                -DUSE_XPU=OFF \
+                    \
                 -DBUILD_CUSTOM_PROTOBUF=OFF \
                 -DBUILD_PYTHON=OFF \
                 -DBUILD_SHARED_LIBS=OFF \
