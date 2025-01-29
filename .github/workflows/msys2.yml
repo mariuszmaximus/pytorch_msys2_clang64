@@ -38,9 +38,7 @@ jobs:
             python-typing_extensions:p
             libbacktrace:p
 
-      - name: dir c:\msys64
-        run:  dir c:\msys64
-
+      # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
       - name: Enable git long paths and symlinks on Windows and disable fsmonitor daemon
         shell: bash
         run: |
@@ -52,12 +50,14 @@ jobs:
           # in https://github.com/actions/checkout/issues/1018
           git config --global core.fsmonitor false
 
+      # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
       # Needed for binary builds, see: https://github.com/pytorch/pytorch/issues/73339#issuecomment-1058981560
       - name: Enable long paths on Windows
         shell: powershell
         run: |
           Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
 
+      # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
       # Since it's just a defensive command, the workflow should continue even if the command fails.
       # This step can be removed once Windows Defender is removed from the AMI.
       - name: Disable Windows Defender scheduled and real-time scanning for files in directories used by PyTorch
@@ -77,7 +77,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
-          submodules: true
+          submodules: false
           fetch-depth: 0
 
       - name: git submodule sync
