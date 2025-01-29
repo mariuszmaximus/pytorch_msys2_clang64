@@ -70,10 +70,20 @@ jobs:
         run: |
           set  
 
+      - name: git submodule sync
+        shell: msys2 {0}
+        run: |
+          git submodule sync 
+
+      - name: git submodule sync
+        shell: msys2 {0}
+        run: |
+          git submodule update --init --recursive
+
       - name: python setup.py build
         shell: msys2 {0}
         run: |
-          python3.12  
+          python3.12 --version  
 
 
       - uses: actions/checkout@v4
