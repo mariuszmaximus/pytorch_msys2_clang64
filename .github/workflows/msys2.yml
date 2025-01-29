@@ -30,6 +30,7 @@ jobs:
             ninja:p
             openmp:p
             libunwind:p
+            protobuf:p
 
       - name: dir c:\msys64
         run:  dir c:\msys64
@@ -75,4 +76,8 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DCMAKE_C_COMPILER="c:/msys64/clang64/bin/clang.exe" \
-                -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe"
+                -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe" \
+                -DBUILD_CUSTOM_PROTOBUF=OFF \
+                -DBUILD_PYTHON=OFF \
+                -DBUILD_SHARED_LIBS=OFF \
+                -DUSE_CUDA=OFF 
