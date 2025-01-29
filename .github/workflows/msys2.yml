@@ -68,4 +68,4 @@ jobs:
 
       - name: cmake [configure]
         shell: msys2 {0}
-        run: cmake -B build_SYS_${{env.BUILD_TYPE}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B build_SYS_${{env.BUILD_TYPE}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}  -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=C:\msys64\clang64\bin\clang.exe -DCMAKE_CXX_COMPILER:FILEPATH=C:\msys64\clang64\bin\clang++.exe
