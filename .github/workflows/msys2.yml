@@ -4,8 +4,8 @@ on:
   push:
   pull_request:
 
-permissions:
-  contents: read
+env:
+  BUILD_TYPE: Release
 
 jobs:
   build:
@@ -22,10 +22,6 @@ jobs:
 
         install: >-
           git
-          mc
-          p7zip
-          zip
-          unrar
           bash
 
         pacboy: >-
@@ -33,20 +29,15 @@ jobs:
           cmake:p
           clang:p
           ninja:p
-          lldb:p
-          gdb:p
-          qt6:p
-          qt6-charts:p
-          graphviz:p
-          opencl-headers:p
-          opencl-icd:p
           openmp:p
           libunwind:p
-          dcmtk:p
-          fftw:p
 
     - uses: actions/checkout@v4
       with:
         lfs: true
         submodules:  true
         fetch-depth:  0
+
+    - name: cmake [configure]
+      shell: msys2 {0}
+      run: cmake -B build_SYS_${{env.BUILD_TYPE}}  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
