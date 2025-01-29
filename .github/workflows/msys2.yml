@@ -33,7 +33,8 @@ jobs:
             protobuf:p
             eigen3:p
             openblas:p
-            python-yaml:p
+            python-pyaml:p
+            python-setuptools:p
 
       - name: dir c:\msys64
         run:  dir c:\msys64
