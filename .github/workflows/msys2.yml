@@ -20,7 +20,7 @@ jobs:
           path-type: inherit
           release: false
           update: false
-          cache: true
+          cache: false
 
           install: >-
             git
