@@ -1,0 +1,51 @@
+name: MSYS2
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: clang64
+        location: c:\msys64_CI
+        path-type: inherit
+        release: false
+        update: false
+        cache: false
+
+        install: >-
+          git
+          mc
+          p7zip
+          zip
+          unrar
+          bash
+
+        pacboy: >-
+          git-lfs:p
+          cmake:p
+          clang:p
+          ninja:p
+          lldb:p
+          gdb:p
+          qt6:p
+          qt6-charts:p
+          graphviz:p
+          opencl-headers:p
+          opencl-icd:p
+          openmp:p
+          libunwind:p
+          dcmtk:p
+          fftw:p
+
+    - uses: actions/checkout@v4
+      with:
+        lfs: true
+        submodules:  true
+        fetch-depth:  0
