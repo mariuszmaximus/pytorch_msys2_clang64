@@ -70,6 +70,12 @@ jobs:
         run: |
           set  
 
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: true
+          fetch-depth: 0
+
       - name: git submodule sync
         shell: msys2 {0}
         run: |
@@ -80,17 +86,6 @@ jobs:
         run: |
           git submodule update --init --recursive
 
-      - name: python setup.py build
-        shell: msys2 {0}
-        run: |
-          python3.12 --version  
-
-
-      - uses: actions/checkout@v4
-        with:
-          lfs: true
-          submodules: true
-          fetch-depth: 0
 
       - name: python setup.py build
         shell: msys2 {0}
