@@ -8,8 +8,7 @@ env:
   BUILD_TYPE: Release
   CMAKE_C_COMPILER: C:/msys64/clang64/bin/clang.exe
   CMAKE_CXX_COMPILER: C:/msys64/clang64/bin/clang++.exe
-  USE_CUDA: OFF  
-  CMAKE_SYSTEM_PROCESSOR: x86_64  
+  MSYS2: 1  
 
 jobs:
   build:
@@ -96,10 +95,10 @@ jobs:
           git submodule update --init --recursive
 
 
-#      - name: python setup.py build
-#        shell: msys2 {0}
-#        run: |
-#          python setup.py build  
+      - name: python setup.py build
+        shell: msys2 {0}
+        run: |
+          python setup.py build  
 
 
       - name: cmake [configure]
