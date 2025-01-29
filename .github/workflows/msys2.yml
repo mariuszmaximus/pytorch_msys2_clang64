@@ -114,7 +114,8 @@ jobs:
                 -USE_TENSORPIPE=OFF \
                 -DUSE_KLEIDIAI=OFF \
                 -DUSE_XPU=OFF \
-                    \
+                -DCMAKE_SYSTEM_PROCESSOR=x86_64  \
+                   \
                 -DBUILD_CUSTOM_PROTOBUF=OFF \
                 -DBUILD_PYTHON=OFF \
                 -DBUILD_SHARED_LIBS=OFF \
