@@ -65,13 +65,24 @@ jobs:
           # that it doesn't interfere
           Set-MpPreference -DisableRealtimeMonitoring $True -ErrorAction Ignore
 
+      - name: set
+        shell: msys2 {0}
+        run: |
+          set  
+
+      - name: python setup.py build
+        shell: msys2 {0}
+        run: |
+          python3.12  
+
+
       - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
           fetch-depth: 0
 
-      - name: cmake [configure]
+      - name: python setup.py build
         shell: msys2 {0}
         run: |
           python setup.py build  
