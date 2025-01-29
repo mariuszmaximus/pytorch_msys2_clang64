@@ -14,7 +14,6 @@ jobs:
       - uses: msys2/setup-msys2@v2
         with:
           msystem: clang64
-          location: c:\msys64_CI
           path-type: inherit
           release: false
           update: false
@@ -34,9 +33,6 @@ jobs:
 
       - name: dir c:\msys64
         run:  dir c:\msys64
-
-      - name: dir c:\msys64_CI
-        run:  dir c:\msys64_CI
 
       - name: Enable git long paths and symlinks on Windows and disable fsmonitor daemon
         shell: bash
@@ -78,5 +74,5 @@ jobs:
           cmake -B build_SYS_${{env.BUILD_TYPE}} \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-                -DCMAKE_C_COMPILER="c:/msys64_CI/clang64/bin/clang.exe" \
-                -DCMAKE_CXX_COMPILER="c:/msys64_CI/clang64/bin/clang++.exe"
+                -DCMAKE_C_COMPILER="c:/msys64/clang64/bin/clang.exe" \
+                -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe"
