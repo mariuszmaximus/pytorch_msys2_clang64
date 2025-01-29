@@ -35,6 +35,7 @@ jobs:
             openblas:p
             python-pyaml:p
             python-setuptools:p
+            python-typing_extensions:p
 
       - name: dir c:\msys64
         run:  dir c:\msys64
