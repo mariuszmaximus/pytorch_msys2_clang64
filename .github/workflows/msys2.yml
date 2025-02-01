@@ -88,6 +88,18 @@ jobs:
         run: |
           c:/msys64/clang64/bin/python.exe --version  
 
+      - name: python3
+        shell: msys2 {0}
+        run: |
+          python -c "import setuptools; print('setuptools is installed')" || echo "setuptools is missing"
+
+      - name: python4
+        shell: msys2 {0}
+        run: |
+          python -c "import yaml; print('yaml is installed')" || echo "yaml is missing"
+
+
+
       - uses: actions/checkout@v4
         with:
           lfs: true
@@ -137,6 +149,7 @@ jobs:
                 \
                 -DBUILD_CUSTOM_PROTOBUF=OFF \
                 -DBUILD_PYTHON=OFF \
-                -DBUILD_SHARED_LIBS=OFF \
-                -DPython_EXECUTABLE=python.exe
+                -DBUILD_SHARED_LIBS=OFF 
+
+#                -DPython_EXECUTABLE=python.exe
  
