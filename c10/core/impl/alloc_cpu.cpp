@@ -114,6 +114,7 @@ void* alloc_cpu(size_t nbytes) {
       nbytes,
       " bytes.");
 #else
+#ifndef MSYS2
   int err = posix_memalign(&data, c10_compute_alignment(nbytes), nbytes);
   CAFFE_ENFORCE(
       err == 0,
@@ -124,6 +125,14 @@ void* alloc_cpu(size_t nbytes) {
       " (",
       c10::utils::str_error(err),
       ")");
+#else      
+  data = _aligned_malloc(nbytes, c10_compute_alignment(nbytes));
+  CAFFE_ENFORCE(
+      data != nullptr,
+      "DefaultCPUAllocator: can't allocate memory: you tried to allocate ",
+      nbytes,
+      " bytes.");
+#endif // MSYS2
   if (is_thp_alloc(nbytes)) {
 #ifdef __linux__
     // MADV_HUGEPAGE advise is available only for linux.
