@@ -819,6 +819,10 @@ if(USE_MPS)
   endif()
 endif()
 
+if(MSYS2)
+  target_compile_definitions(torch_cpu PRIVATE MSYS2)
+endif()
+
 option(TORCH_USE_IWYU "Use include-what-you-use to clean up header inclusion" OFF)
 if(TORCH_USE_IWYU)
   find_program(iwyu NAMES include-what-you-use)
