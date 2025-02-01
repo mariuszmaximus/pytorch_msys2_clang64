@@ -6,8 +6,8 @@ on:
 
 env:
   BUILD_TYPE: Release
-  CMAKE_C_COMPILER: C:/msys64/clang64/bin/clang.exe
-  CMAKE_CXX_COMPILER: C:/msys64/clang64/bin/clang++.exe
+  CMAKE_C_COMPILER: c:/msys64/clang64/bin/clang.exe
+  CMAKE_CXX_COMPILER: c:/msys64/clang64/bin/clang++.exe
 
 jobs:
   build:
@@ -36,6 +36,7 @@ jobs:
             eigen3:p
             openblas:p
             openssl:p
+            python-yaml:p
             python-pyaml:p
             python-setuptools:p
             python-typing_extensions:p
@@ -81,14 +82,14 @@ jobs:
         with:
           lfs: true
           submodules: false
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: git submodule sync
         shell: msys2 {0}
         run: |
           git submodule sync 
 
-      - name: git submodule sync
+      - name: git submodule update
         shell: msys2 {0}
         run: |
           git submodule update --init --recursive
@@ -119,7 +120,7 @@ jobs:
                 -DUSE_XNNPACK=OFF \
                 -DUSE_FLASH_ATTENTION=OFF \
                 -DUSE_MEM_EFF_ATTENTION=OFF \
-                -USE_TENSORPIPE=OFF \
+                -DUSE_TENSORPIPE=OFF \
                 -DUSE_KLEIDIAI=OFF \
                 -DUSE_XPU=OFF \
                 -DMSYS2=ON \
