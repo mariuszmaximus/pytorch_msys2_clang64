@@ -49,7 +49,7 @@ TEST(ScalarTest, Equality) {
 }
 
 TEST(ScalarTest, LongsAndLongLongs) {
-  Scalar longOne = 1L;
-  Scalar longlongOne = 1LL;
+  Scalar longOne = static_cast<int64_t>(1L);
+  Scalar longlongOne = static_cast<int64_t>(1LL);
   ASSERT_EQ(longOne.toInt(), longlongOne.toInt());
 }
