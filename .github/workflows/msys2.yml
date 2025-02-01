@@ -78,26 +78,6 @@ jobs:
         run: |
           set
 
-      - name: python1
-        shell: msys2 {0}
-        run: |
-          python.exe --version
-
-      - name: python2
-        shell: msys2 {0}
-        run: |
-          c:/msys64/clang64/bin/python.exe --version
-
-      - name: python3
-        shell: msys2 {0}
-        run: |
-          python -c "import setuptools; print('setuptools is installed')" || echo "setuptools is missing"
-
-      - name: python4
-        shell: msys2 {0}
-        run: |
-          python -c "import yaml; print('yaml is installed')" || echo "yaml is missing"
-
       - uses: actions/checkout@v4
         with:
           lfs: true
@@ -155,3 +135,9 @@ jobs:
         shell: msys2 {0}
         run: |
           cmake --build build_SYS_${{env.BUILD_TYPE}} --config ${{env.BUILD_TYPE}}
+
+      - name: cmake [ctest]
+        shell: msys2 {0}
+        run: |
+          cd build_SYS_${{env.BUILD_TYPE}}
+          ctest -v --output-on-failure
