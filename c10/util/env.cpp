@@ -12,7 +12,7 @@ static std::shared_mutex env_mutex;
 // Set an environment variable.
 void set_env(const char* name, const char* value, bool overwrite) {
   std::lock_guard lk(env_mutex);
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(MSYS2)
 #pragma warning(push)
 #pragma warning(disable : 4996)
   if (!overwrite) {
