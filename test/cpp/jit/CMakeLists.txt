@@ -8,7 +8,12 @@ add_library(torchbind_test SHARED
 )
 target_link_libraries(torchbind_test torch)
 
-add_library(jitbackend_test SHARED ${JIT_TEST_ROOT}/test_backend_lib.cpp)
+if(BUILD_SHARED_LIBS)
+  set(LIB_MODE SHARED)
+else()
+  set(LIB_MODE STATIC)
+endif()
+add_library(jitbackend_test ${LIB_MODE} ${JIT_TEST_ROOT}/test_backend_lib.cpp)
 target_link_libraries(jitbackend_test torch)
 
 set(BACKEND_WITH_COMPILER_SRCS
@@ -22,7 +27,7 @@ if(USE_KINETO)
     ${TORCH_SRC_DIR}/csrc/jit/mobile/profiler_edge.cpp)
 endif()
 
-add_library(backend_with_compiler SHARED
+add_library(backend_with_compiler STATIC
         ${BACKEND_WITH_COMPILER_SRCS}
         )
 if(USE_KINETO)
