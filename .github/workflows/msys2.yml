@@ -6,8 +6,6 @@ on:
 
 env:
   BUILD_TYPE: Release
-  CMAKE_C_COMPILER: c:/msys64/clang64/bin/clang.exe
-  CMAKE_CXX_COMPILER: c:/msys64/clang64/bin/clang++.exe
 
 jobs:
   build:
@@ -40,7 +38,6 @@ jobs:
             python-pyaml:p
             python-setuptools:p
             python-typing_extensions:p
-#            libbacktrace:p
 
       # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
       - name: Enable git long paths and symlinks on Windows and disable fsmonitor daemon
@@ -94,11 +91,6 @@ jobs:
         run: |
           git submodule update --init --recursive
 
-#      - name: python setup.py build
-#        shell: msys2 {0}
-#        run: |
-#          python setup.py build
-
       - name: cmake [configure]
         shell: msys2 {0}
         run: |
@@ -140,4 +132,4 @@ jobs:
         shell: msys2 {0}
         run: |
           cd build_SYS_${{env.BUILD_TYPE}}
-          ctest -v --output-on-failure
+          ctest --verbose --output-on-failure
