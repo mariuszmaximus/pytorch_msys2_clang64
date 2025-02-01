@@ -324,7 +324,7 @@ constexpr uint32_t CUDA_THREADS_PER_BLOCK_FALLBACK = 256;
 // CUDA_KERNEL_ASSERT checks the assertion
 // even when NDEBUG is defined. This is useful for important assertions in CUDA
 // code that would otherwise be suppressed when building Release.
-#if defined(__ANDROID__) || defined(__APPLE__) || defined(__FreeBSD__)
+#if defined(__ANDROID__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(MSYS2)
 // Those platforms do not support assert()
 #define CUDA_KERNEL_ASSERT(cond)
 #define CUDA_KERNEL_ASSERT_MSG(cond, msg)
