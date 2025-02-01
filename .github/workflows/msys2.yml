@@ -124,6 +124,7 @@ jobs:
         run: |
           cmake -B build_SYS_${{env.BUILD_TYPE}} \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                \
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DCMAKE_C_COMPILER="c:/msys64/clang64/bin/clang.exe" \
                 -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe" \
@@ -149,3 +150,8 @@ jobs:
                 -DBUILD_SHARED_LIBS=OFF \
                 \
                 -DPython_EXECUTABLE=c:/msys64/clang64/bin/python3.exe
+
+      - name: cmake [build]
+        shell: msys2 {0}
+        run: |
+          cmake --build build_SYS_${{env.BUILD_TYPE}} --config ${{env.BUILD_TYPE}}
