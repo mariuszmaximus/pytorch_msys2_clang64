@@ -78,6 +78,16 @@ jobs:
         run: |
           set  
 
+      - name: python1
+        shell: msys2 {0}
+        run: |
+          python.exe --version  
+
+      - name: python2
+        shell: msys2 {0}
+        run: |
+          c:/msys64/clang64/bin/python.exe --version  
+
       - uses: actions/checkout@v4
         with:
           lfs: true
