@@ -1,5 +1,10 @@
 #pragma once
 
+// fix for MSYS2
+#ifndef NAN
+#define NAN (0.0/0.0)
+#endif 
+
 #include <complex>
 
 #include <c10/macros/Macros.h>
