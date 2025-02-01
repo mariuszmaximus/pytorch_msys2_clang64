@@ -76,17 +76,17 @@ jobs:
       - name: set
         shell: msys2 {0}
         run: |
-          set  
+          set
 
       - name: python1
         shell: msys2 {0}
         run: |
-          python.exe --version  
+          python.exe --version
 
       - name: python2
         shell: msys2 {0}
         run: |
-          c:/msys64/clang64/bin/python.exe --version  
+          c:/msys64/clang64/bin/python.exe --version
 
       - name: python3
         shell: msys2 {0}
@@ -98,8 +98,6 @@ jobs:
         run: |
           python -c "import yaml; print('yaml is installed')" || echo "yaml is missing"
 
-
-
       - uses: actions/checkout@v4
         with:
           lfs: true
@@ -109,42 +107,39 @@ jobs:
       - name: git submodule sync
         shell: msys2 {0}
         run: |
-          git submodule sync 
+          git submodule sync
 
       - name: git submodule update
         shell: msys2 {0}
         run: |
           git submodule update --init --recursive
 
-
 #      - name: python setup.py build
 #        shell: msys2 {0}
 #        run: |
-#          python setup.py build  
-
+#          python setup.py build
 
       - name: cmake [configure]
         shell: msys2 {0}
         run: |
           cmake -B build_SYS_${{env.BUILD_TYPE}} \
                 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-				\
                 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
                 -DCMAKE_C_COMPILER="c:/msys64/clang64/bin/clang.exe" \
                 -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe" \
                 \
-	            -DUSE_DISTRIBUTED=OFF \
-	            -DUSE_MKLDNN=OFF \
-	            -DUSE_CUDA=OFF \
-	            -DBUILD_TEST=OFF \
-	            -DUSE_FBGEMM=OFF \
-	            -DUSE_NNPACK=OFF \
-	            -DUSE_QNNPACK=OFF \
-	            -DUSE_XNNPACK=OFF \
-	            -DUSE_FLASH_ATTENTION=OFF \
-	            -DUSE_MEM_EFF_ATTENTION=OFF \
-	            -DUSE_TENSORPIPE=OFF \
-				\
+                -DUSE_DISTRIBUTED=OFF \
+                -DUSE_MKLDNN=OFF \
+                -DUSE_CUDA=OFF \
+                -DBUILD_TEST=OFF \
+                -DUSE_FBGEMM=OFF \
+                -DUSE_NNPACK=OFF \
+                -DUSE_QNNPACK=OFF \
+                -DUSE_XNNPACK=OFF \
+                -DUSE_FLASH_ATTENTION=OFF \
+                -DUSE_MEM_EFF_ATTENTION=OFF \
+                -DUSE_TENSORPIPE=OFF \
+                \
                 -DUSE_KLEIDIAI=OFF \
                 -DUSE_XPU=OFF \
                 -DMSYS2=ON \
@@ -153,4 +148,4 @@ jobs:
                 -DBUILD_PYTHON=OFF \
                 -DBUILD_SHARED_LIBS=OFF \
                 \
-                -DPython_EXECUTABLE=c:/msys64/clang64/bin/python3.exe 
+                -DPython_EXECUTABLE=c:/msys64/clang64/bin/python3.exe
