@@ -30,7 +30,7 @@
 
 namespace torch::jit {
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(MSYS2)
 double strtod_c(const char* nptr, char** endptr) {
   static _locale_t loc = _create_locale(LC_ALL, "C");
   return _strtod_l(nptr, endptr, loc);
