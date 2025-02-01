@@ -112,7 +112,7 @@ jobs:
                 -DUSE_DISTRIBUTED=OFF \
                 -DUSE_MKLDNN=OFF \
                 -DUSE_CUDA=OFF \
-                -DBUILD_TEST=OFF \
+                -DBUILD_TEST=ON \
                 -DUSE_FBGEMM=OFF \
                 -DUSE_NNPACK=OFF \
                 -DUSE_QNNPACK=OFF \
