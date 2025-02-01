@@ -106,6 +106,18 @@ std::optional<TempDir> try_make_tempdir(std::string_view name_prefix) {
 #endif // defined(_WIN32)
 }
 
+#ifdef MSYS2
+#ifndef _SH_DENYNO
+  #define _SH_DENYNO 0
+#endif
+#ifndef _S_IREAD
+  #define _S_IREAD  0x0100
+#endif
+#ifndef _S_IWRITE
+  #define _S_IWRITE  0x0200
+#endif
+#endif // MSYS2
+
 #if defined(_WIN32)
 bool TempFile::open() {
   if (fd != -1) {
