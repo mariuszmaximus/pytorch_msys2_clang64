@@ -1,0 +1,131 @@
+name: MSYS2
+
+on:
+  push:
+  pull_request:
+
+env:
+  BUILD_TYPE: Release
+  CMAKE_C_COMPILER: C:/msys64/clang64/bin/clang.exe
+  CMAKE_CXX_COMPILER: C:/msys64/clang64/bin/clang++.exe
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: clang64
+          path-type: inherit
+          release: false
+          update: false
+          cache: false
+
+          install: >-
+            git
+            bash
+
+          pacboy: >-
+            git-lfs:p
+            cmake:p
+            clang:p
+            ninja:p
+            openmp:p
+            libunwind:p
+            protobuf:p
+            eigen3:p
+            openblas:p
+            openssl:p
+            python-pyaml:p
+            python-setuptools:p
+            python-typing_extensions:p
+#            libbacktrace:p
+
+      # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
+      - name: Enable git long paths and symlinks on Windows and disable fsmonitor daemon
+        shell: bash
+        run: |
+          git config --global core.longpaths true
+          git config --global core.symlinks true
+
+          # https://git-scm.com/docs/git-fsmonitor--daemon. The daemon could lock
+          # the directory on Windows and prevent GHA from checking out as reported
+          # in https://github.com/actions/checkout/issues/1018
+          git config --global core.fsmonitor false
+
+      # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
+      # Needed for binary builds, see: https://github.com/pytorch/pytorch/issues/73339#issuecomment-1058981560
+      - name: Enable long paths on Windows
+        shell: powershell
+        run: |
+          Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1
+
+      # copy from https://github.com/pytorch/pytorch/blob/main/.github/workflows/generated-windows-binary-libtorch-release-main.yml
+      # Since it's just a defensive command, the workflow should continue even if the command fails.
+      # This step can be removed once Windows Defender is removed from the AMI.
+      - name: Disable Windows Defender scheduled and real-time scanning for files in directories used by PyTorch
+        continue-on-error: true
+        shell: powershell
+        run: |
+          Add-MpPreference -ExclusionPath $(Get-Location).tostring(),$Env:TEMP -ErrorAction Ignore
+          # Let's both exclude the path and disable Windows Defender completely just to be sure
+          # that it doesn't interfere
+          Set-MpPreference -DisableRealtimeMonitoring $True -ErrorAction Ignore
+
+      - name: set
+        shell: msys2 {0}
+        run: |
+          set  
+
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: false
+          fetch-depth: 0
+
+      - name: git submodule sync
+        shell: msys2 {0}
+        run: |
+          git submodule sync 
+
+      - name: git submodule sync
+        shell: msys2 {0}
+        run: |
+          git submodule update --init --recursive
+
+
+#      - name: python setup.py build
+#        shell: msys2 {0}
+#        run: |
+#          python setup.py build  
+
+
+      - name: cmake [configure]
+        shell: msys2 {0}
+        run: |
+          cmake -B build_SYS_${{env.BUILD_TYPE}} \
+                -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                -DCMAKE_C_COMPILER="c:/msys64/clang64/bin/clang.exe" \
+                -DCMAKE_CXX_COMPILER="c:/msys64/clang64/bin/clang++.exe" \
+                \
+                -DUSE_DISTRIBUTED=OFF \
+                -DUSE_MKLDNN=OFF \
+                -DUSE_CUDA=OFF \
+                -DBUILD_TEST=OFF \
+                -DUSE_FBGEMM=OFF \
+                -DUSE_NNPACK=OFF \
+                -DUSE_QNNPACK=OFF \
+                -DUSE_XNNPACK=OFF \
+                -DUSE_FLASH_ATTENTION=OFF \
+                -DUSE_MEM_EFF_ATTENTION=OFF \
+                -USE_TENSORPIPE=OFF \
+                -DUSE_KLEIDIAI=OFF \
+                -DUSE_XPU=OFF \
+                -DMSYS2=ON \
+                \
+                -DBUILD_CUSTOM_PROTOBUF=OFF \
+                -DBUILD_PYTHON=OFF \
+                -DBUILD_SHARED_LIBS=OFF \
+                -DPython_EXECUTABLE=python.exe
+ 
