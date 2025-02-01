@@ -61,7 +61,7 @@ struct TempFile {
   AT_DISALLOW_COPY_AND_ASSIGN(TempFile);
 
   TempFile(const std::string& t, int suffix) {
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
     auto wt = c10::u8u16(t);
     std::vector<wchar_t> tt(wt.c_str(), wt.c_str() + wt.size() + 1);
     int fd = wmkstemps(tt.data(), suffix);
@@ -69,6 +69,15 @@ struct TempFile {
     file_ = _wfdopen(fd, L"r+");
     auto wname = std::wstring(tt.begin(), tt.end() - 1);
     name_ = c10::u16u8(wname);
+#elif  defined(MSYS2) 
+    std::string temp_template = t + "XXXXXX"; 
+    std::vector<char> tt(temp_template.begin(), temp_template.end() + 1); 
+    
+    int fd = mkstemp(tt.data());
+    AT_ASSERT(fd != -1);
+
+    file_ = fdopen(fd, "r+");
+    name_ = std::string(tt.begin(), tt.end() - 1);       
 #else
     // mkstemps edits its first argument in places
     // so we make a copy of the string here, including null terminator
