@@ -877,6 +877,11 @@ cmake_dependent_option(
 # Suspect users building from source will need this
 add_definitions(-DFLASHATTENTION_DISABLE_ALIBI)
 
+# for MSYS2 
+if(MSYS2)
+  add_compile_definitions(MSYS2)
+endif()
+
 # CAVEAT: Again, Flash Attention2 will error while building for sm52 while Mem
 # Eff Attention won't
 cmake_dependent_option(
