@@ -404,7 +404,7 @@ __host__ __device__
 }
 #endif // NDEBUG
 // ROCm disable kernel assert by default
-#if !defined(C10_USE_ROCM_KERNEL_ASSERT) and defined(USE_ROCM)
+#if (!defined(C10_USE_ROCM_KERNEL_ASSERT) and defined(USE_ROCM)) || defined(MSYS2)
 #define CUDA_KERNEL_ASSERT(cond)
 #define CUDA_KERNEL_ASSERT_MSG(cond, msg)
 #define SYCL_KERNEL_ASSERT(cond)
